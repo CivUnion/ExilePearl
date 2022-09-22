@@ -1,6 +1,9 @@
-name: ${name}
+name: ${pluginName}
 version: ${version}
+authors: [ProgrammerDan, Gordon]
 main: com.devotedmc.ExilePearl.ExilePearlPlugin
+description: ${description}
+api-version: ${api_version}
 depend: [CivModCore]
 softdepend: [NameLayer, Citadel, Bastion, CivChat2, JukeAlert, CombatTagPlus, RandomSpawn, WorldBorder, MythicMobs, Brewery, BanStick]
 commands:
@@ -9,4 +12,3 @@ commands:
   pp:
     description: Legacy prison pearl commands
     aliases: [pplocate, ppl, ppfree, ppf, ppbroadcast, ppb, ppconfirm, ppsilence]
-api-version: 1.14
