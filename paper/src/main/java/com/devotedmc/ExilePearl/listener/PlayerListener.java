@@ -1,5 +1,6 @@
 package com.devotedmc.ExilePearl.listener;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import com.devotedmc.ExilePearl.ExilePearl;
 import com.devotedmc.ExilePearl.ExilePearlApi;
 import com.devotedmc.ExilePearl.ExileRule;
@@ -33,7 +34,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -272,10 +272,13 @@ public class PlayerListener implements Listener, Configurable {
 		}
 
 		Location loc = imprisoner.getLocation();
-		World world = imprisoner.getWorld();
 		Inventory inv = imprisoner.getInventory();
-		for (Entry<Integer, ? extends ItemStack> entry :
-			inv.all(Material.ENDER_PEARL).entrySet()) {
+		removePearlFromInventory(inv, loc);
+		imprisoner.saveData();
+	}
+
+	public void removePearlFromInventory(Inventory inv, Location loc) {
+		for (Entry<Integer, ? extends ItemStack> entry : inv.all(Material.ENDER_PEARL).entrySet()) {
 			ItemStack item = entry.getValue();
 			ExilePearl pearl = pearlApi.getPearlFromItemStack(item);
 			if (pearl == null) {
@@ -283,12 +286,22 @@ public class PlayerListener implements Listener, Configurable {
 			}
 			int slot = entry.getKey();
 			inv.clear(slot);
-			world.dropItemNaturally(loc, item);
+			pearl.setHolder(loc.getWorld().dropItemNaturally(loc, item));
 		}
-		imprisoner.saveData();
 	}
 
-
+	@EventHandler
+	public void onNPCDespawn(EntityRemoveFromWorldEvent event) {
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Player player)) {
+			return;
+		}
+		if (!entity.hasMetadata("NPC")){
+			return;
+		}
+		removePearlFromInventory(player.getInventory(), player.getLocation());
+		player.saveData();
+	}
 
 	/**
 	 * Prevents a pearl from despawning
@@ -468,7 +481,11 @@ public class PlayerListener implements Listener, Configurable {
 
 		ExilePearl pearl = pearlApi.getPearlFromItemStack(e.getCurrentItem());
 		if(pearl != null) {
-			if (pearlApi.isPlayerExiled(clicker)) {
+			ExilePearl clickerPearl = pearlApi.getPearl(clicker.getUniqueId());
+			if (clickerPearl == null) {
+				return;
+			}
+			if (pearlApi.isPlayerExiled(clicker) && clickerPearl.getPearlType() == PearlType.EXILE) {
 				clicker.sendMessage(ChatUtils.parseColor(Lang.pearlCantHold));
 				e.setCancelled(true);
 			}
@@ -490,8 +507,11 @@ public class PlayerListener implements Listener, Configurable {
 		if (pearl == null) {
 			return;
 		}
-
-		if (pearlApi.isPlayerExiled((Player)e.getEntity())) {
+		ExilePearl pearlee = pearlApi.getPearl(e.getEntity().getUniqueId());
+		if (pearlee == null) {
+			return;
+		}
+		if (pearlApi.isPlayerExiled((Player)e.getEntity()) && pearlee.getPearlType() == PearlType.EXILE) {
 			e.setCancelled(true);
 		}
 	}
@@ -1234,6 +1254,23 @@ public class PlayerListener implements Listener, Configurable {
 			event.setTo(SpawnUtil.chooseSpawn(pearlApi.getPearlConfig().getPrisonWorld()));
 			event.getPlayer().sendMessage(Component.text("Pearled players cannot use portals!", NamedTextColor.RED));
 			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void whenPearlTransfer(PlayerPortalEvent event){
+		if (pearlApi.getPearlConfig().canTakeThroughPortals()) {
+			return;
+		}
+		Player player = event.getPlayer();
+		for(ItemStack is : player.getInventory()){
+			ExilePearl pearl = pearlApi.getPearlFromItemStack(is);
+			if (pearl == null) {
+				continue;
+			}
+			is.setAmount(is.getAmount() - 1);
+			pearl.setHolder(player.getWorld().dropItemNaturally(player.getLocation(), pearl.createItemStack()));
+			player.sendMessage(Component.text("The pearl(s) you were carrying have been dropped since you went through a portal!", NamedTextColor.RED));
 		}
 	}
 
