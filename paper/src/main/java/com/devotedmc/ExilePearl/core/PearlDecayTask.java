@@ -9,7 +9,7 @@ import com.devotedmc.ExilePearl.config.PearlConfig;
  */
 final class PearlDecayTask extends ExilePearlTask {
 
-	private int interval = 60;
+	private long interval = 20L * 60L;
 
 	/**
 	 * Creates a new FactoryWorker instance
@@ -35,8 +35,8 @@ final class PearlDecayTask extends ExilePearlTask {
 
 
 	@Override
-	public int getTickInterval() {
-		return interval * TICKS_PER_MINUTE;
+	public long getTickInterval() {
+		return interval;
 	}
 
 
@@ -54,7 +54,7 @@ final class PearlDecayTask extends ExilePearlTask {
 
 	@Override
 	public void loadConfig(PearlConfig config) {
-		int newInterval = pearlApi.getPearlConfig().getPearlHealthDecayIntervalMin();
+		long newInterval = pearlApi.getPearlConfig().getPearlHealthDecayIntervalInTicks();
 
 		if (newInterval != interval) {
 			this.interval = newInterval;

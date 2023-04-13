@@ -9,6 +9,7 @@ import com.devotedmc.ExilePearl.config.Document;
 import com.devotedmc.ExilePearl.config.DocumentConfig;
 import com.devotedmc.ExilePearl.config.PearlConfig;
 import com.devotedmc.ExilePearl.storage.StorageType;
+import com.devotedmc.ExilePearl.util.TimeUtil;
 import com.google.common.base.Preconditions;
 import java.util.HashSet;
 import java.util.List;
@@ -127,6 +128,7 @@ final class CorePearlConfig implements DocumentConfig, PearlConfig {
 		return doc.getString("storage.mysql.migrate_dbname", "prisonpearl");
 	}
 
+	/*
 	@Override
 	public String getPearlHealthDecayHumanInterval() {
 		return doc.getString("pearls.decay_interval_human", "day");
@@ -136,10 +138,11 @@ final class CorePearlConfig implements DocumentConfig, PearlConfig {
 	public int getPearlHealthDecayHumanIntervalMin() {
 		return doc.getInteger("pearls.decay_interval_min_human", 1440);
 	}
+	 */
 
 	@Override
-	public int getPearlHealthDecayIntervalMin() {
-		return doc.getInteger("pearls.decay_interval_min", 60);
+	public long getPearlHealthDecayIntervalInTicks() {
+		return TimeUtil.parseTicks(doc.getString("pearls.decay_every", "1h"));
 	}
 
 	@Override
@@ -148,8 +151,13 @@ final class CorePearlConfig implements DocumentConfig, PearlConfig {
 	}
 
 	@Override
-	public int getPearlHealthDecayTimeout() {
-		return doc.getInteger("pearls.decay_timeout_min", 10080);
+	public long getPearlHealthDecayTimeoutInTicks() {
+		return TimeUtil.parseTicks(doc.getString("pearls.stop_decay_after", "1w"));
+	}
+
+	@Override
+	public long getPearlHumanDisplayTimeInTicks() {
+		return TimeUtil.parseTicks(doc.getString("pearls.display_time", "1d"));
 	}
 
 	@Override
@@ -467,8 +475,8 @@ final class CorePearlConfig implements DocumentConfig, PearlConfig {
 	}
 
 	@Override
-	public int getDamageLogInterval() {
-		return doc.getInteger("damage_log.tick_interval", 20);
+	public long getDamageLogIntervalInTicks() {
+		return TimeUtil.parseTicks(doc.getString("damage_log.tick_interval", "20s"));
 	}
 
 	@Override

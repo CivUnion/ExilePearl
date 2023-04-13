@@ -273,7 +273,7 @@ final class CorePearlManager implements PearlManager {
 
 		final Collection<ExilePearl> pearls = getPearls();
 		final int decayAmount = pearlApi.getPearlConfig().getPearlHealthDecayAmount();
-		final int decayTimeout = pearlApi.getPearlConfig().getPearlHealthDecayTimeout();
+		final long decayTimeout = pearlApi.getPearlConfig().getPearlHealthDecayTimeoutInTicks();
 		final Set<String> disallowedWorlds = pearlApi.getPearlConfig().getDisallowedWorlds();
 		final HashSet<ExilePearl> pearlsToFree = new HashSet<>();
 
@@ -294,7 +294,7 @@ final class CorePearlManager implements PearlManager {
 			}
 
 			PearlHolder holder = pearl.getHolder();
-			if (decayTimeout > 0 && pearl.getPlayer() != null) {
+			if (decayTimeout > 0L && pearl.getPlayer() != null) {
 				// player is online now!
 				pearl.setLastOnline(new Date());
 			}

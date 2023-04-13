@@ -13,6 +13,7 @@ import com.devotedmc.ExilePearl.holder.ItemHolder;
 import com.devotedmc.ExilePearl.holder.PearlHolder;
 import com.devotedmc.ExilePearl.holder.PlayerHolder;
 import com.devotedmc.ExilePearl.storage.PearlUpdateStorage;
+import com.devotedmc.ExilePearl.util.TimeUtil;
 import com.google.common.base.Preconditions;
 import java.util.Date;
 import java.util.HashSet;
@@ -83,7 +84,7 @@ final class CoreExilePearl implements ExilePearl {
 			final int pearlId,
 			final PearlHolder holder,
 			final PearlType defaultPearlType,
-			final int decayTimeoutMin)
+			final long decayTimeout)
 	{
 		Preconditions.checkNotNull(pearlApi, "pearlApi");
 		Preconditions.checkNotNull(storage, "storage");
@@ -104,7 +105,7 @@ final class CoreExilePearl implements ExilePearl {
 		this.holders.add(holder);
 		this.health = DEFAULT_HEALTH;
 		this.storageEnabled = false;
-		this.decayTimeoutMs = (long)decayTimeoutMin * 60L * 1000L;
+		this.decayTimeoutMs = TimeUtil.ticksToMillis(decayTimeout);
 	}
 
 

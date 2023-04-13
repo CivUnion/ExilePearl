@@ -45,7 +45,7 @@ final class CoreDamageLogger extends ExilePearlTask implements DamageLogger {
 	private static final short POTION_EXTENDED_MASK = POTION_UPGRADE_MASK << 1;
 	private static final short POTION_MULTIPLIER_MASK = POTION_EXTENDED_MASK | POTION_UPGRADE_MASK;
 
-	private int interval = 20;
+	private long interval = 20L * 20L;
 	private int algorithm = 0;
 	private double decayAmount = 1.0;
 	private double maxDamage = 30.0;
@@ -87,7 +87,7 @@ final class CoreDamageLogger extends ExilePearlTask implements DamageLogger {
 	}
 
 	@Override
-	public int getTickInterval() {
+	public long getTickInterval() {
 		return interval;
 	}
 
@@ -156,7 +156,7 @@ final class CoreDamageLogger extends ExilePearlTask implements DamageLogger {
 	public void loadConfig(PearlConfig config) {
 		super.loadConfig(config);
 
-		int newInterval = config.getDamageLogInterval();
+		long newInterval = config.getDamageLogIntervalInTicks();
 		algorithm = config.getDamageLogAlgorithm();
 		decayAmount = Math.max(0, config.getDamageLogDecayAmount());
 		maxDamage = Math.max(0, config.getDamageLogMaxDamage());

@@ -51,7 +51,7 @@ final class PlayerSuicideTask extends ExilePearlTask implements SuicideHandler {
 
 
 	@Override
-	public int getTickInterval() {
+	public long getTickInterval() {
 		return TICKS_PER_SECOND;
 	}
 

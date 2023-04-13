@@ -25,18 +25,18 @@ public interface PearlConfig extends MySqlConfig, DocumentConfig {
 	/**
 	 * Gets the name of the interval humans measure pearl decay in
 	 */
-	String getPearlHealthDecayHumanInterval();
+	//String getPearlHealthDecayHumanInterval();
 
 	/**
 	 * Gets the length of the interval humans measure pearl decay in (minutes)
 	 */
-	int getPearlHealthDecayHumanIntervalMin();
+	//int getPearlHealthDecayHumanIntervalMin();
 
 	/**
 	 * Gets the pearl decay minute interval
 	 * @return the pearl decay minute interval
 	 */
-	int getPearlHealthDecayIntervalMin();
+	long getPearlHealthDecayIntervalInTicks();
 
 	/**
 	 * Gets the pearl decay amount
@@ -49,7 +49,9 @@ public interface PearlConfig extends MySqlConfig, DocumentConfig {
 	 *  that decay is no longer applied)
 	 * @return the # of minutes absent at which decay is skipped.
 	 */
-	int getPearlHealthDecayTimeout();
+	long getPearlHealthDecayTimeoutInTicks();
+
+	long getPearlHumanDisplayTimeInTicks();
 
 	/**
 	 * Gets the pearl health start value
@@ -140,7 +142,7 @@ public interface PearlConfig extends MySqlConfig, DocumentConfig {
 	 * Gets the damage log tick interval
 	 * @return The damage log tick interval
 	 */
-	int getDamageLogInterval();
+	long getDamageLogIntervalInTicks();
 
 	/**
 	 * Gets the damage log decay amount

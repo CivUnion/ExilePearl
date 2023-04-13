@@ -72,7 +72,7 @@ public final class CorePluginFactory implements PearlFactory {
 					pearlId,
 					new BlockHolder(loc.getBlock()),
 					pearlApi.getPearlConfig().getDefaultPearlType(),
-					pearlApi.getPearlConfig().getPearlHealthDecayTimeout()
+					pearlApi.getPearlConfig().getPearlHealthDecayTimeoutInTicks()
 			);
 			pearl.setPearlType(PearlType.valueOf(doc.getInteger("type", 0)));
 			pearl.setHealth(health);
@@ -103,7 +103,7 @@ public final class CorePluginFactory implements PearlFactory {
 				pearlId,
 				new PlayerHolder(killedBy),
 				pearlApi.getPearlConfig().getDefaultPearlType(),
-				pearlApi.getPearlConfig().getPearlHealthDecayTimeout()
+				pearlApi.getPearlConfig().getPearlHealthDecayTimeoutInTicks()
 		);
 		pearl.enableStorage();
 		return pearl;
@@ -123,7 +123,7 @@ public final class CorePluginFactory implements PearlFactory {
 				pearlId,
 				holder,
 				pearlApi.getPearlConfig().getDefaultPearlType(),
-				pearlApi.getPearlConfig().getPearlHealthDecayTimeout()
+				pearlApi.getPearlConfig().getPearlHealthDecayTimeoutInTicks()
 		);
 		pearl.enableStorage();
 		return pearl;

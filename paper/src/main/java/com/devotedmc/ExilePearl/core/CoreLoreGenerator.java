@@ -8,6 +8,7 @@ import com.devotedmc.ExilePearl.RepairMaterial;
 import com.devotedmc.ExilePearl.command.CmdExilePearl;
 import com.devotedmc.ExilePearl.config.PearlConfig;
 import com.devotedmc.ExilePearl.holder.PearlHolder;
+import com.devotedmc.ExilePearl.util.TimeUtil;
 import com.google.common.base.Preconditions;
 import com.programmerdan.minecraft.banstick.handler.BanHandler;
 import java.text.SimpleDateFormat;
@@ -92,9 +93,20 @@ final class CoreLoreGenerator implements LoreProvider {
 				if(rep.getStack().hasItemMeta() && rep.getStack().getItemMeta().hasDisplayName()){
 					item = rep.getStack().getItemMeta().getDisplayName();
 				}
-				int damagesPerHumanInterval = (config.getPearlHealthDecayHumanIntervalMin() / config.getPearlHealthDecayIntervalMin()) * config.getPearlHealthDecayAmount(); // intervals in a human interval * damage per
-				int repairsPerHumanInterval = damagesPerHumanInterval / amountPerItem;
-				lore.add(parse("<a>Cost per %s using %s:<n> %s", config.getPearlHealthDecayHumanInterval(), item, Integer.toString(repairsPerHumanInterval)));
+
+				// human ticks, gross
+				long humanTicks = config.getPearlHumanDisplayTimeInTicks();
+				long decayTicks = config.getPearlHealthDecayIntervalInTicks();
+
+				String displayTime = TimeUtil.formatTicks(humanTicks);
+				double amount = ((double)humanTicks / decayTicks) * config.getPearlHealthDecayAmount();
+
+				String displayAmount = String.format(".%2f", (amount/amountPerItem));
+				lore.add(parse("<a>Cost per %s using %s:<n> %s", displayTime, item, displayAmount));
+
+				//int damagesPerHumanInterval = (config.getPearlHealthDecayHumanIntervalMin() / config.getPearlHealthDecayIntervalMin()) * config.getPearlHealthDecayAmount(); // intervals in a human interval * damage per
+				//int repairsPerHumanInterval = damagesPerHumanInterval / amountPerItem;
+				//lore.add(parse("<a>Cost per %s using %s:<n> %s", config.getPearlHealthDecayHumanInterval(), item, Integer.toString(repairsPerHumanInterval)));
 			}
 		}
 

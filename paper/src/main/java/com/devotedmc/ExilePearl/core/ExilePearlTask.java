@@ -9,8 +9,8 @@ import org.bukkit.Bukkit;
 
 abstract class ExilePearlTask implements ExilePearlRunnable {
 
-	protected static final int TICKS_PER_MINUTE = 1200;
-	public static final int TICKS_PER_SECOND = 20;
+	protected static final long TICKS_PER_MINUTE = 1200;
+	public static final long TICKS_PER_SECOND = 20;
 
 	protected final ExilePearlApi pearlApi;
 
@@ -34,7 +34,7 @@ abstract class ExilePearlTask implements ExilePearlRunnable {
 
 		long tickInterval = getTickInterval();
 
-		if (tickInterval == 0) {
+		if (tickInterval == 0L) {
 			pearlApi.log(Level.SEVERE, "Failed to start the task '%s' because the tick interval was 0.", getTaskName());
 			return;
 		}
@@ -79,5 +79,5 @@ abstract class ExilePearlTask implements ExilePearlRunnable {
 
 	}
 
-	public abstract int getTickInterval();
+	public abstract long getTickInterval();
 }

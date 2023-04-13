@@ -273,11 +273,10 @@ pearls:
   free_by_throwing: false
   free_teleport: true
   hotbar_needed: true
-  decay_interval_human: week
-  decay_interval_min_human: 10080
-  decay_interval_min: 60
+  decay_every: 1h
   decay_amount: 1
-  decay_timeout_min: 10080
+  stop_decay_after: 1w
+  display_time: 1d
   start_value: 12
   max_value: 336
   repair_materials:

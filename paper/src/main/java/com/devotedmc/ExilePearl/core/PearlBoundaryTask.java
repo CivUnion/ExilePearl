@@ -53,18 +53,16 @@ final class PearlBoundaryTask extends ExilePearlTask implements BorderHandler {
 
 	//these material IDs are acceptable for places to teleport player; breathable blocks and water	
 	public static final LinkedHashSet<Material> safeOpenBlocks = new LinkedHashSet<>(Arrays.asList(
-			 new Material[] { 
-					Material.AIR, Material.WATER, Material.RAIL, Material.ACTIVATOR_RAIL, 
-					Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.GRASS, Material.FERN,
-					Material.LARGE_FERN, Material.DEAD_BUSH, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM,
-					Material.TORCH, Material.REDSTONE_WIRE, Material.WHEAT, Material.LADDER, Material.LEVER, Material.STONE_PRESSURE_PLATE}
-		));
+			Material.AIR, Material.WATER, Material.RAIL, Material.ACTIVATOR_RAIL,
+			Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.GRASS, Material.FERN,
+			Material.LARGE_FERN, Material.DEAD_BUSH, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM,
+			Material.TORCH, Material.REDSTONE_WIRE, Material.WHEAT, Material.LADDER, Material.LEVER, Material.STONE_PRESSURE_PLATE));
 
 	public static final LinkedHashSet<Material> okBaseBlocks = new LinkedHashSet<>();
 
 	//these material IDs are ones we don't want to drop the player onto, like cactus or lava or fire or activated Ender portal
 	public static final LinkedHashSet<Material> painfulBlocks = 
-			new LinkedHashSet<>(Arrays.asList( new Material[] {Material.LAVA, Material.FIRE, Material.CACTUS, Material.END_PORTAL} ));
+			new LinkedHashSet<>(Arrays.asList(Material.LAVA, Material.FIRE, Material.CACTUS, Material.END_PORTAL));
 	
 	static {
 		safeOpenBlocks.addAll(Tag.BUTTONS.getValues());
@@ -85,7 +83,7 @@ final class PearlBoundaryTask extends ExilePearlTask implements BorderHandler {
 
 
 	@Override
-	public int getTickInterval() {
+	public long getTickInterval() {
 		return TICKS_PER_SECOND;
 	}
 
