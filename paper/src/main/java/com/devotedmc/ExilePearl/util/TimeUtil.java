@@ -64,7 +64,7 @@ public class TimeUtil {
 				isFirst = false;
 			}
 
-			builder.append(count).append(" ").append(" ").append(factor.prettyName);
+			builder.append(count).append(" ").append(factor.prettyName);
 			if(count > 1){
 				builder.append("s");
 			}

@@ -101,7 +101,8 @@ final class CoreLoreGenerator implements LoreProvider {
 				String displayTime = TimeUtil.formatTicks(humanTicks);
 				double amount = ((double)humanTicks / decayTicks) * config.getPearlHealthDecayAmount();
 
-				String displayAmount = String.format(".%2f", (amount/amountPerItem));
+				String displayAmount = String.format("%.2f", (amount/amountPerItem))
+						.replaceAll("0*$", "").replaceAll("\\.$", "");
 				lore.add(parse("<a>Cost per %s using %s:<n> %s", displayTime, item, displayAmount));
 
 				//int damagesPerHumanInterval = (config.getPearlHealthDecayHumanIntervalMin() / config.getPearlHealthDecayIntervalMin()) * config.getPearlHealthDecayAmount(); // intervals in a human interval * damage per
